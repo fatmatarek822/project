@@ -1,4 +1,5 @@
 
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_project1/modules/cubit/cubit.dart';
 import 'package:flutter_app_project1/modules/cubit/states.dart';
@@ -20,10 +21,13 @@ class SettingScreen extends StatelessWidget {
         var userModel = AppCubit.get(context).userModel;
         var profileImage = AppCubit.get(context).profileImage;
 
+
         nameController.text = userModel!.name!;
         phoneController.text = userModel.phone!;
 
-        return SingleChildScrollView(
+        return ConditionalBuilder(
+          condition: AppCubit.get(context).userModel !=null,
+          builder: (context) => SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
@@ -32,8 +36,8 @@ class SettingScreen extends StatelessWidget {
                   const LinearProgressIndicator(),
                 if(state is UserUpdateLoadingState)
                   const SizedBox(
-                  height: 5,
-                ),
+                    height: 5,
+                  ),
                 Center(
                   child: Stack(
                     alignment: AlignmentDirectional.bottomEnd,
@@ -47,11 +51,11 @@ class SettingScreen extends StatelessWidget {
                       CircleAvatar(
                         backgroundColor: Colors.white,
                         child: IconButton(
-                            onPressed: ()
-                            {
-                              AppCubit.get(context).getProfileImage();
-                            },
-                            icon: Icon(Icons.camera_alt),
+                          onPressed: ()
+                          {
+                            AppCubit.get(context).getProfileImage();
+                          },
+                          icon: Icon(Icons.camera_alt),
                           color: Colors.black,
                           iconSize: 20,
                         ),
@@ -63,17 +67,17 @@ class SettingScreen extends StatelessWidget {
                   height: 20,
                 ),
                 defaultFormField(
-                    controller: nameController,
-                    type: TextInputType.name,
-                    validate: (value)
+                  controller: nameController,
+                  type: TextInputType.name,
+                  validate: (value)
+                  {
+                    if(value!.isEmpty)
                     {
-                      if(value!.isEmpty)
-                      {
-                        return 'Please Enter Your Name';
-                      }
-                    },
-                    label: 'Name',
-                    prefix: Icons.person,
+                      return 'Please Enter Your Name';
+                    }
+                  },
+                  label: 'Name',
+                  prefix: Icons.person,
                 ),
 
                 const SizedBox(
@@ -92,56 +96,59 @@ class SettingScreen extends StatelessWidget {
                   label: 'Phone',
                   prefix: Icons.phone,
                 ),
-               const SizedBox(
-                 height: 10,
-               ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Row(
-                 children: [
-                   Expanded(
-                     child: OutlinedButton(
-                      onPressed: ()
-                      {
-                          AppCubit.get(context).updateUser(name: nameController.text, phone: phoneController.text);
-                      },
-                      child: const Text(
-                        'Upload Profile Data',
-                      ),
-              ),
-                   ),
-
-                 ],
-               ),
-                if(AppCubit.get(context).profileImage != null)
-                  Row(
                   children: [
                     Expanded(
                       child: OutlinedButton(
                         onPressed: ()
                         {
-                          AppCubit.get(context).uploadProfileImage(name: nameController.text, phone: phoneController.text);
+                          AppCubit.get(context).updateUser(name: nameController.text, phone: phoneController.text);
                         },
                         child: const Text(
-                          'Upload Profile Image',
+                          'Upload Profile Data',
                         ),
                       ),
                     ),
+
                   ],
                 ),
+                if(AppCubit.get(context).profileImage != null)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: ()
+                          {
+                            AppCubit.get(context).uploadProfileImage(name: nameController.text, phone: phoneController.text);
+                          },
+                          child: const Text(
+                            'Upload Profile Image',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
 
                 const SizedBox(
                   height: 20,
                 ),
 
                 defaultButton(
-                    function: ()
-                    {
-                       signOut(context);
-                    },
-                    text: 'Logout',
+                  function: ()
+                  {
+                    AppCubit.get(context).currentIndex =0;
+                    AppCubit.get(context).signOut(context);
+                  },
+                  text: 'Logout',
                 ),
               ],
             ),
           ),
+        ),
+          fallback: (context) => Center(child: CircularProgressIndicator()),
         );
       },
     );

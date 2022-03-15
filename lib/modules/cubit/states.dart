@@ -25,6 +25,8 @@ class UserUpdateErrorState extends AppStates{}
 
 class UserUpdateLoadingState extends AppStates{}
 
+class AppChangeModeState extends AppStates{}
+
 
 
 

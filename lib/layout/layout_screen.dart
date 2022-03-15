@@ -27,6 +27,12 @@ class LayoutScreen extends StatelessWidget {
                     },
                     icon: Icon(Icons.search),
                 ),
+                IconButton(onPressed: ()
+                {
+                   AppCubit.get(context).changeAppMode();
+                }, icon: Icon(
+                    Icons.brightness_4_outlined),
+                ),
               ],
             ),
             body: cubit.Screens[cubit.currentIndex],
@@ -66,3 +72,4 @@ class LayoutScreen extends StatelessWidget {
 
   }
 }
+

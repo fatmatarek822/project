@@ -141,8 +141,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         ),
       ),
     );
-
-
   }
 
   Widget buildBoardingItem(BoardingModel model) => Column(

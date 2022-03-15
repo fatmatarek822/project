@@ -7,9 +7,12 @@ import 'package:flutter_app_project1/modules/chat/chat_screen.dart';
 import 'package:flutter_app_project1/modules/cubit/states.dart';
 import 'package:flutter_app_project1/modules/favourite/favourite_screen.dart';
 import 'package:flutter_app_project1/modules/home/home_screen.dart';
+import 'package:flutter_app_project1/modules/login/login_screen.dart';
 import 'package:flutter_app_project1/modules/map/map_screen.dart';
 import 'package:flutter_app_project1/modules/setting/setting_screen.dart';
+import 'package:flutter_app_project1/shared/components/components.dart';
 import 'package:flutter_app_project1/shared/components/constant.dart';
+import 'package:flutter_app_project1/shared/network/local/cache_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -54,6 +57,10 @@ class AppCubit extends Cubit<AppStates> {
 
   void ChangeBottomNav(int index)
   {
+    if(index==4)
+    {
+      getUserData();
+    }
       currentIndex = index;
       emit(AppChangeBottomNavState());
   }
@@ -156,6 +163,38 @@ class AppCubit extends Cubit<AppStates> {
     {
       emit(UserUpdateErrorState());
     });
+  }
+
+  void signOut (context)
+  {
+    CacheHelper.removeData(key: 'uid').then((value)
+    {
+      if(value)
+      {
+        navigateAndFinish(context, LoginScreen(),);
+      }
+    });
+  }
+
+  bool isDark = false;
+  ThemeMode appMode = ThemeMode.dark;
+
+  void changeAppMode({bool? themeMode})
+  {
+    if(themeMode !=null)
+    {
+      isDark =themeMode;
+      emit(AppChangeModeState());
+    }
+    else
+      {
+        isDark = !isDark;
+        CacheHelper.putBoolean(key: 'isDark', value: isDark)
+            .then((value) {
+          emit(AppChangeModeState());
+        });
+      }
+
   }
 
 }

@@ -1,10 +1,12 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_project1/layout/layout_screen.dart';
+import 'package:flutter_app_project1/modules/cubit/cubit.dart';
 import 'package:flutter_app_project1/modules/login/cubit/cubit.dart';
 import 'package:flutter_app_project1/modules/login/cubit/states.dart';
 import 'package:flutter_app_project1/modules/register/register_screen.dart';
 import 'package:flutter_app_project1/shared/components/components.dart';
+import 'package:flutter_app_project1/shared/components/constant.dart';
 import 'package:flutter_app_project1/shared/network/local/cache_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,6 +35,7 @@ class LoginScreen extends StatelessWidget {
               value: state.uid,
             ).then((value) =>
             {
+              uid = state.uid,
               navigateAndFinish(context, LayoutScreen(),)
             });
           }
@@ -49,13 +52,10 @@ class LoginScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Center(
+                      Center(
                         child: Text(
                           'LOGIN',
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                       const SizedBox(
@@ -144,8 +144,9 @@ class LoginScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                              'Don\'t have an account ?'
+                           Text(
+                              'Don\'t have an account ?',
+                             style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white),
                           ),
                           defaultTextButton(
                             function: ()

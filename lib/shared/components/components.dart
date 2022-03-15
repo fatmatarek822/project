@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_project1/modules/cubit/cubit.dart';
 import 'package:flutter_app_project1/modules/login/login_screen.dart';
 import 'package:flutter_app_project1/shared/network/local/cache_helper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -134,13 +135,14 @@ Widget myDivider() => Padding(
 );
 
 
-void signOut (context)
-{
-  CacheHelper.removeData(key: 'token').then((value)
-  {
-    if(value)
-    {
-      navigateAndFinish(context, LoginScreen(),);
-    }
-  });
-}
+// void signOut (context)
+// {
+//   AppCubit.get(context).currentIndex ==0;
+//   CacheHelper.removeData(key: 'uid').then((value)
+//   {
+//     if(value)
+//     {
+//       navigateAndFinish(context, LoginScreen(),);
+//     }
+//   });
+// }
